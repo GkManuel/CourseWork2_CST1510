@@ -14,4 +14,5 @@ print(f"Password: {passwd} Hash: {str(pass_hash)}")
 
 emanuel = "pycharm"
 
+
 print(emanuel)
