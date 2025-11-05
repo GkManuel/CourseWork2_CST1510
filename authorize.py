@@ -13,3 +13,5 @@ pass_hash = hash_password(passwd)
 print(f"Password: {passwd} Hash: {str(pass_hash)}")
 
 emanuel = "pycharm"
+
+print(emanuel)
