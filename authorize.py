@@ -11,8 +11,3 @@ def hash_password(plain_text_password):
 passwd = "secret"
 pass_hash = hash_password(passwd)
 print(f"Password: {passwd} Hash: {str(pass_hash)}")
-
-emanuel = "pycharm"
-
-
-print(emanuel)
