@@ -122,3 +122,23 @@ def validate_username(username):
         print("Username must only contain alphanumeric characters")
         return False
     return True
+def validate_password(password):
+    """ Validates password strength
+    Args:
+        password (str): plain text password to validate
+    Returns:
+        True if password is valid, False otherwise
+    """
+    if not (8<=len(password)<=50):
+        print("Password must be 8-50 characters long")
+        return False
+    if not re.search(r"[A-Z}]", password):
+        print("Password must contain atleast one uppercase character")
+        return False
+    if not re.search(r"[a-z]", password):
+        print("Password must contain atleast one lowercase character")
+        return False
+    if not re.search(r"[0-9]", password):
+        print("Password must contain atleast one numeric character")
+        return False
+    return True
