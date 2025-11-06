@@ -115,5 +115,10 @@ def validate_username(username):
     Returns:
         a valid message if the username is in the right format else gives an error message
     """
-
-
+    if not (3<=len(username)<=20):
+        print("Username must be 3-20 characters long")
+        return False
+    if  not re.fullmatch(r"[A-Za-z0-9]+", username):
+        print("Username must only contain alphanumeric characters")
+        return False
+    return True
