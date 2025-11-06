@@ -49,7 +49,7 @@ def user_exists(username):
             line = line.strip()
             if not line:
                 continue
-            stored_username,_ =line.split(',', 1)
+            stored_username, stored_hash=line.split(',', 1)
             if stored_username == username:
                 return True
     return False
@@ -80,11 +80,31 @@ def register(username, password):
 
 # Login function
 def login_user(username, password):
-    """Logs in a user with given username and password"""
-    with open("users.txt", r) as f:
+    """Authenticates a user by verifying their username and password
+    Args:
+        username (str): username to authenticate
+        password (str): plain text password to verify
+    Returns true if authentication was successful, false otherwise
+    """
+
+    #Case when no user is registered yet
+    if not os.path.exists(user_data_files):
+        print("No user registered yet")
+        return False
+
+    with open("users.txt", 'r') as f:
         for line in f.readlines():
-            user, hash = line.strip().split(',',1)
-            if user == username:
-                return verify_password(password,hash)
+            if not line:
+                continue
+            stored_username, stored_hash = line.strip().split(',',1)
+            #if username matches then verify password
+            if stored_username == username:
+                if verify_password(password,stored_hash):
+                    print(f"Welcome {username}")
+                    return True
+                else:
+                    print("Invalid password")
+                    return False
+    print("Username not found")
     return False
 
