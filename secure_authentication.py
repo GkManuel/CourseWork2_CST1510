@@ -1,9 +1,15 @@
 import os
 import bcrypt
+import re
 user_data_files = "users.txt"
 # Function to hash a password
 def hash_password(plain_text_password):
-    """converts plain text password into hashed password"""
+    """Hashes a password using bcrypt, with automatic salt generation
+    Args:
+        plain_text_password (str): Plain text password to hash
+    Returns:
+        str: Hashed password
+        """
     # Encode the password to bytes, required by bcrypt
     password_bytes = plain_text_password.encode('utf-8')
     # Generate a salt and hash the password
@@ -13,12 +19,41 @@ def hash_password(plain_text_password):
 
 # Function to verify a password
 def verify_password(plain_password, hashed_password):
-    """Verify password hashed against plain text password"""
+    """Verifies a plaintext password against a stored bcrypt hash
+    Args:
+        plain_password (str): Plain text password to verify
+        hashed_password (str): The stored hash to check against
+    Returns:
+        True if the password matches, False otherwise
+        """
     # Encoding both plain text and stored hash to bytes
     password_bytes = plain_password.encode('utf-8')
     hashed_password_bytes = hashed_password.encode('utf-8')
     # bcrypt.checkpw handles extracting the salt and comparing
     return bcrypt.checkpw(password_bytes, hashed_password_bytes)
+
+# Function to check if the username exists in the database
+def user_exists(username):
+    """Checks if username already exists in the database
+    Args:
+        username (str): Username to check
+    Returns:
+        True if the username already exists, False otherwise
+        """
+    # Case when the file doesn't exist yet
+    if not os.path.exists(user_data_files):
+        return False
+    # Reading the file and checking each line if username exists
+    with open(user_data_files, 'r') as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            stored_username,_ =line.split(',', 1)
+            if stored_username == username:
+                return True
+    return False
+
 
 # Function to register user
 def register(username, password):
