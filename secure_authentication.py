@@ -1,7 +1,9 @@
 import os
 import bcrypt
+user_data_files = "users.txt"
 # Function to hash a password
 def hash_password(plain_text_password):
+    """converts plain text password into hashed password"""
     # Encode the password to bytes, required by bcrypt
     password_bytes = plain_text_password.encode('utf-8')
     # Generate a salt and hash the password
@@ -11,6 +13,7 @@ def hash_password(plain_text_password):
 
 # Function to verify a password
 def verify_password(plain_password, hashed_password):
+    """Verify password hashed against plain text password"""
     # Encoding both plain text and stored hash to bytes
     password_bytes = plain_password.encode('utf-8')
     hashed_password_bytes = hashed_password.encode('utf-8')
@@ -19,6 +22,7 @@ def verify_password(plain_password, hashed_password):
 
 # Function to register user
 def register(username, password):
+    """Registers a new user with given username and password"""
     hashed_password = hash_password(password)
     with open("users.txt", "a") as f:
         f.write(f"{username}, {hashed_password}\n")
@@ -26,9 +30,11 @@ def register(username, password):
 
 # Login function
 def login_user(username, password):
+    """Logs in a user with given username and password"""
     with open("users.txt", r) as f:
         for line in f.readlines():
             user, hash = line.strip().split(',',1)
             if user == username:
                 return verify_password(password,hash)
     return False
+
