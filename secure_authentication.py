@@ -1,3 +1,4 @@
+import os
 import bcrypt
 # Function to hash a password
 def hash_password(plain_text_password):
@@ -22,3 +23,12 @@ def register(username, password):
     with open("users.txt", "a") as f:
         f.write(f"{username}, {hashed_password}\n")
     print(f"User {username} registered successfully")
+
+# Login function
+def login_user(username, password):
+    with open("users.txt", r) as f:
+        for line in f.readlines():
+            user, hash = line.strip().split(',',1)
+            if user == username:
+                return verify_password(password,hash)
+    return False
