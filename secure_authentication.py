@@ -57,11 +57,26 @@ def user_exists(username):
 
 # Function to register user
 def register(username, password):
-    """Registers a new user with given username and password"""
+    """Registers a new user with a given username, hashes their password and stores everything in the database
+    Args:
+        username (str): Username to register
+        password (str): Password to hash and store
+    Returns:
+        True if registration was successful, False if username already exists
+    """
+    # Checking if username exists
+    if user_exists(username):
+        print(f"Username: {username} already exists")
+        return False
+
+    # Hashing the password
     hashed_password = hash_password(password)
+
+    # Writing username and hashed password into file
     with open("users.txt", "a") as f:
         f.write(f"{username}, {hashed_password}\n")
     print(f"User {username} registered successfully")
+    return True
 
 # Login function
 def login_user(username, password):
