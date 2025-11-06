@@ -113,32 +113,90 @@ def validate_username(username):
     Args:
         username (str): username to validate
     Returns:
-        a valid message if the username is in the right format else gives an error message
+        tuple: (bool, str)- (is_valid, error_msg)
     """
     if not (3<=len(username)<=20):
-        print("Username must be 3-20 characters long")
-        return False
+        return False, "Username must be 3-20 characters long"
     if  not re.fullmatch(r"[A-Za-z0-9]+", username):
-        print("Username must only contain alphanumeric characters")
-        return False
+        return False, "Username must only contain alphanumeric characters"
     return True
+
 def validate_password(password):
     """ Validates password strength
     Args:
         password (str): plain text password to validate
     Returns:
-        True if password is valid, False otherwise
+        tuple: (bool, str)- (is_valid, error_msg)
     """
     if not (8<=len(password)<=50):
-        print("Password must be 8-50 characters long")
-        return False
+        return False, "Password must be 8-50 characters long"
     if not re.search(r"[A-Z}]", password):
-        print("Password must contain atleast one uppercase character")
-        return False
+        return False, "Password must contain atleast one uppercase character"
     if not re.search(r"[a-z]", password):
-        print("Password must contain atleast one lowercase character")
-        return False
+        return False, "Password must contain atleast one lowercase character"
     if not re.search(r"[0-9]", password):
-        print("Password must contain atleast one numeric character")
-        return False
+        return False, "Password must contain atleast one numeric character"
     return True
+
+def display_menu():
+    """Displays the menu options"""
+    print("\n" + "="*50)
+    print("  MULTI-DOMAIN INTELLIGENCE PLATFORM")
+    print("  Secure Authentication System")
+    print("="*50)
+    print("\n[1] Register a new user")
+    print("[2] Login")
+    print("[3] Exit")
+    print("-"*50)
+
+def main():
+    """Main program loop"""
+    while True:
+        display_menu()
+        choice = input("\nPlease select an option(1-3): ").strip()
+        if choice == "1":
+
+            # Registration flow
+            print("\n--USER REGISTRATION--")
+            username = input("Enter a username: ").strip()
+
+            # Validate username
+            is_valid, error_msg = validate_username(username)
+            if not is_valid:
+                print(f"Error:{error_msg}")
+                continue
+            password = input("Enter a password: ").strip()
+            is_valid, error_msg = validate_password(password)
+            if not is_valid:
+                print(f"Error:{error_msg}")
+                continue
+
+            # Confirm password
+            password_confirm = input("COnfirm password: ").strip()
+            if password_confirm != password:
+                print("Error: Password do not match")
+                continue
+
+            # Register user
+            register(username, password)
+
+        elif choice == "2":
+            # Login flow
+            print("\n--USER LOGIN--")
+            username = input("Enter a username: ").strip()
+            password = input("Enter a password: ").strip()
+            # Attempt login
+            if login_user(username, password):
+                print("\n Welcome: {username}")
+                print("\n You're now logged in")
+                input("Press enter to return to main menu")
+
+        elif choice == "3":
+            print("\nThank you for using authentication system")
+            print("Exiting...")
+            break
+        else:
+            print("Invalid option, Please select 1, 2, or 3")
+
+if __name__ == "__main__":
+    main()
