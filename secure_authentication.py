@@ -106,5 +106,13 @@ def login_user(username, password):
                     print("Invalid password")
                     return False
     print("Username not found")
-    return False
+    return
+
+def validate_username(username):
+    """ Validates username format
+    Args:
+        username (str): username to validate
+    Returns:
+        a valid message if the username is in the right format else gives an error message
+    """
 
