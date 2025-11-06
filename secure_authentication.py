@@ -15,3 +15,10 @@ def verify_password(plain_password, hashed_password):
     hashed_password_bytes = hashed_password.encode('utf-8')
     # bcrypt.checkpw handles extracting the salt and comparing
     return bcrypt.checkpw(password_bytes, hashed_password_bytes)
+
+# Function to register user
+def register(username, password):
+    hashed_password = hash_password(password)
+    with open("users.txt", "a") as f:
+        f.write(f"{username}, {hashed_password}\n")
+    print(f"User {username} registered successfully")
