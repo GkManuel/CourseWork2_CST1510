@@ -15,7 +15,7 @@ def hash_password(plain_text_password):
     # Generate a salt and hash the password
     salt = bcrypt.gensalt()
     hashed_password = bcrypt.hashpw(password_bytes, salt)
-    return hashed_password
+    return hashed_password.decode("utf-8")
 
 # Function to verify a password
 def verify_password(plain_password, hashed_password):
@@ -44,8 +44,8 @@ def user_exists(username):
     if not os.path.exists(user_data_files):
         return False
     # Reading the file and checking each line if username exists
-    with open(user_data_files, 'r') as f:
-        for line in f:
+    with open(user_data_files, 'r', encoding="utf-8") as f:
+        for line in f.readlines():
             line = line.strip()
             if not line:
                 continue
@@ -53,7 +53,6 @@ def user_exists(username):
             if stored_username == username:
                 return True
     return False
-
 
 # Function to register user
 def register(username, password):
@@ -73,8 +72,8 @@ def register(username, password):
     hashed_password = hash_password(password)
 
     # Writing username and hashed password into file
-    with open("users.txt", "a") as f:
-        f.write(f"{username}, {hashed_password}\n")
+    with open(user_data_files, "a", encoding="utf-8") as f:
+        f.write(f"{username},{hashed_password}\n")
     print(f"User {username} registered successfully")
     return True
 
@@ -92,7 +91,7 @@ def login_user(username, password):
         print("No user registered yet")
         return False
 
-    with open("users.txt", 'r') as f:
+    with open(user_data_files, 'r', encoding="utf-8") as f:
         for line in f.readlines():
             if not line:
                 continue
@@ -106,7 +105,7 @@ def login_user(username, password):
                     print("Invalid password")
                     return False
     print("Username not found")
-    return
+    return False
 
 def validate_username(username):
     """ Validates username format
@@ -119,7 +118,7 @@ def validate_username(username):
         return False, "Username must be 3-20 characters long"
     if  not re.fullmatch(r"[A-Za-z0-9]+", username):
         return False, "Username must only contain alphanumeric characters"
-    return True
+    return True,""
 
 def validate_password(password):
     """ Validates password strength
@@ -130,13 +129,13 @@ def validate_password(password):
     """
     if not (8<=len(password)<=50):
         return False, "Password must be 8-50 characters long"
-    if not re.search(r"[A-Z}]", password):
+    if not re.search(r"[A-Z]", password):
         return False, "Password must contain atleast one uppercase character"
     if not re.search(r"[a-z]", password):
         return False, "Password must contain atleast one lowercase character"
     if not re.search(r"[0-9]", password):
         return False, "Password must contain atleast one numeric character"
-    return True
+    return True, ""
 
 def display_menu():
     """Displays the menu options"""
@@ -172,7 +171,7 @@ def main():
                 continue
 
             # Confirm password
-            password_confirm = input("COnfirm password: ").strip()
+            password_confirm = input("Confirm password: ").strip()
             if password_confirm != password:
                 print("Error: Password do not match")
                 continue
@@ -187,7 +186,7 @@ def main():
             password = input("Enter a password: ").strip()
             # Attempt login
             if login_user(username, password):
-                print("\n Welcome: {username}")
+                print(f"\n Welcome: {username}")
                 print("\n You're now logged in")
                 input("Press enter to return to main menu")
 
