@@ -21,40 +21,33 @@ def create_all_tables():
     #cyber_incidents_table
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS cyber_incidents (
-       id INTEGER PRIMARY KEY AUTOINCREMENT,
-       incident_id INTEGER,
-       timestamp TEXT,
-       severity TEXT NOT NULL,
-       category TEXT,
-       status TEXT,
-       description TEXT       
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            severity TEXT NOT NULL,
+            status TEXT DEFAULT 'open',
+            date TEXT       
     )
     """)
 
     #Datasets_table
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS datasets_metadata (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        dataset_id INTEGER,
-        name TEXT,
-        rows INTEGER,
-        columns INTEGER,
-        uploaded_by TEXT,
-        upload_date TEXT
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            source TEXT,
+            category TEXT,
+            size INTEGER
     )
     """)
 
     #IT_tickets table
     cursor.execute("""
-    CREATE TABLE IF NOT EXISTS it_tickets (
-       id INTEGER PRIMARY KEY AUTOINCREMENT,
-       ticket_id INTEGER,
-       priority TEXT,
-       description TEXT,
-       status TEXT,
-       assigned_to TEXT,
-       created_at TEXT,
-       resolution_time_hours INTEGER
+   CREATE TABLE IF NOT EXISTS it_tickets (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            priority TEXT NOT NULL,
+            status TEXT DEFAULT 'open',
+            created_date TEXT
     )
     """)
 
