@@ -10,7 +10,7 @@ DB_PATH = DATA_DIR / "intelligence_platform.db"
 
 
 def migrate_users_from_file():
-    #checks if USERS.TXT file exists
+    #checks if users.txt file exists
     if not USERS_TXT.exists():
         print("users.txt not found, nothing to migrate")
         print(f"Expected: {USERS_TXT}")

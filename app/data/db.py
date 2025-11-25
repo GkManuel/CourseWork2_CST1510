@@ -1,23 +1,11 @@
 import sqlite3
-import pandas as pd
-import bcrypt
 from pathlib import Path
 
-#Define paths
-DATA_DIR = Path("DATA")
-DB_PATH =DATA_DIR / "intelligence_platform.db"
+# Points to the DATA folder in project root – correct location
+DB_PATH = Path(__file__).resolve().parent.parent.parent / "DATA" / "intelligence_platform.db"
 
-#Create DATA folder if it doesn't exist
-DATA_DIR.mkdir(parents=True, exist_ok=True)
-
-#Helper function to get a database connection
 def get_connection():
-    """Returns a new SQLite connection to the intelligence platform DB.
-     Caller must close it with conn.close()"""
+    """Returns a SQLite connection with dictionary-style rows (row['username'])"""
     conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
     return conn
-
-if __name__ == "__main__":
-    print("Imports successful!")
-    print(f" DATA folder: {DATA_DIR.resolve()}")
-    print(f" Database will be created at: {DB_PATH.resolve()}")
